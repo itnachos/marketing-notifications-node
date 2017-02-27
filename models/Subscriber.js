@@ -7,6 +7,8 @@ var client = twilio(config.accountSid, config.authToken);
 
 var SubscriberSchema = new mongoose.Schema({
     phone: String,
+    first_name: String,
+    last_name: String,
     subscribed: {
         type: Boolean,
         default: false

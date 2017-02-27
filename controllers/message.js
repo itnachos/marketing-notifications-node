@@ -10,7 +10,7 @@ exports.webhook = function(request, response) {
     Subscriber.findOne({
         phone: phone
     }, function(err, sub) {
-        if (err) return respond('Derp! Please text back again later.');
+        if (err) return respond('Please text back again later.');
 
         if (!sub) {
             // If there's no subscriber associated with this phone number,
@@ -20,7 +20,7 @@ exports.webhook = function(request, response) {
             });
 
             newSubscriber.save(function(err, newSub) {
-                if (err || !newSub) 
+                if (err || !newSub)
                     return respond('We couldn\'t sign you up - try again.');
 
                 // We're signed up but not subscribed - prompt to subscribe
@@ -42,14 +42,24 @@ exports.webhook = function(request, response) {
 
         // Conditional logic to do different things based on the command from
         // the user
-        if (msg === 'subscribe' || msg === 'unsubscribe') {
+        var sub_commands = ['subscribe','sub','start'];
+        var unsub_commands = ['unsubscribe','unsub','stop'];
+        var commands = sub_commands.concat(unsub_commands);
+
+        //console.log('is command:'+ (commands.indexOf('start') >= 0));
+        //console.log('is start:'+ (sub_commands.indexOf('start') >= 0));
+        //console.log('is stop:'+ (unsub_commands.indexOf('stop') >= 0));
+        //console.log('is stop:'+ (unsub_commands.indexOf('df') >= 0));
+
+        if (commands.indexOf(msg) >= 0) {
+        //if (msg === 'subscribe' || msg === 'unsubscribe' || msg === 'unsub') {
             // If the user has elected to subscribe for messages, flip the bit
             // and indicate that they have done so.
-            subscriber.subscribed = msg === 'subscribe';
+            //subscriber.subscribed = msg === 'subscribe';
+            subscriber.subscribed = (sub_commands.indexOf(msg) >= 0);
             subscriber.save(function(err) {
                 if (err)
-                    return respond('We could not subscribe you - please try '
-                        + 'again.');
+                    return respond('We could not subscribe you - please try again.');
 
                 // Otherwise, our subscription has been updated
                 var responseMessage = 'You are now subscribed for updates.';
@@ -69,7 +79,7 @@ exports.webhook = function(request, response) {
         }
     }
 
-    // Set Content-Type response header and render XML (TwiML) response in a 
+    // Set Content-Type response header and render XML (TwiML) response in a
     // Jade template - sends a text message back to user
     function respond(message) {
         response.type('text/xml');
