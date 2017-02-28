@@ -69,6 +69,9 @@ exports.webhook = function(request, response) {
                 respond(responseMessage);
             });
         } else {
+
+            console.log('MSG::: ' + subscriber.phone + ' ' + msg);
+
             // If we don't recognize the command, text back with the list of
             // available commands
             var responseMessage = 'Sorry, we didn\'t understand that. available commands are: subscribe or unsubscribe';
