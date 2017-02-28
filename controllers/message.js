@@ -13,7 +13,8 @@ exports.webhook = function(request, response) {
         if (err) return respond('Please text back again later.');
 
         if (!sub) {
-            // If there's no subscriber associated with this phone number, create one
+            // If there's no subscriber associated with this phone number,
+            // create one
             var newSubscriber = new Subscriber({
                 phone: phone
             });
@@ -26,7 +27,8 @@ exports.webhook = function(request, response) {
                 respond('Thanks for contacting us! Text "subscribe" to receive updates via text message.');
             });
         } else {
-            // For an existing user, process any input message they sent and send back an appropriate message
+            // For an existing user, process any input message they sent and
+            // send back an appropriate message
             processMessage(sub);
         }
     });
@@ -37,7 +39,8 @@ exports.webhook = function(request, response) {
         var msg = request.body.Body || '';
         msg = msg.toLowerCase().trim();
 
-        // Conditional logic to do different things based on the command from the user
+        // Conditional logic to do different things based on the command from
+        // the user
         var sub_commands = ['subscribe','sub','start'];
         var unsub_commands = ['unsubscribe','unsub','stop'];
         var commands = sub_commands.concat(unsub_commands);
@@ -48,7 +51,10 @@ exports.webhook = function(request, response) {
         //console.log('is stop:'+ (unsub_commands.indexOf('df') >= 0));
 
         if (commands.indexOf(msg) >= 0) {
-            // If the user has elected to subscribe for messages, flip the bit and indicate that they have done so.
+        //if (msg === 'subscribe' || msg === 'unsubscribe' || msg === 'unsub') {
+            // If the user has elected to subscribe for messages, flip the bit
+            // and indicate that they have done so.
+            //subscriber.subscribed = msg === 'subscribe';
             subscriber.subscribed = (sub_commands.indexOf(msg) >= 0);
             subscriber.save(function(err) {
                 if (err)
@@ -57,18 +63,22 @@ exports.webhook = function(request, response) {
                 // Otherwise, our subscription has been updated
                 var responseMessage = 'You are now subscribed for updates.';
                 if (!subscriber.subscribed)
-                    responseMessage = 'You have unsubscribed. Text "subscribe" to start receiving updates again.';
+                    responseMessage = 'You have unsubscribed. Text "subscribe"' +
+                        ' to start receiving updates again.';
 
                 respond(responseMessage);
             });
         } else {
-            // If we don't recognize the command, text back with the list of available commands
-            var responseMessage = 'Sorry, we didn\'t understand that. available commands are: START or STOP';
+            // If we don't recognize the command, text back with the list of
+            // available commands
+            var responseMessage = 'Sorry, we didn\'t understand that. available commands are: subscribe or unsubscribe';
+
             respond(responseMessage);
         }
     }
 
-    // Set Content-Type response header and render XML (TwiML) response in a Jade template - sends a text message back to user
+    // Set Content-Type response header and render XML (TwiML) response in a
+    // Jade template - sends a text message back to user
     function respond(message) {
         response.type('text/xml');
         response.render('twiml', {
@@ -91,6 +101,6 @@ exports.sendMessages = function(request, response) {
             request.flash('successes', 'Messages on their way!');
         }
 
-        response.redirect('/');
+        response.redirect('/myapp');
     });
 };
