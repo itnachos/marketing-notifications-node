@@ -58,8 +58,7 @@ SubscriberSchema.statics.sendMessage = function(message, url, callback) {
             });
         });
 
-        // Don't wait on success/failure, just indicate all messages have been
-        // queued for delivery
+        // Don't wait on success/failure, just indicate all messages have been queued for delivery
         callback.call(this);
     }
 };
