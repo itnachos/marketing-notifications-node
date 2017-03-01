@@ -88,7 +88,7 @@ exports.sendMessages = function(request, response) {
 
     if (config.token != token) {
         request.flash('errors', 'Invalid token');
-        return response.redirect(config.appLead + '/');
+        return response.redirect('/');
     }
 
         // Use model function to send messages to all subscribers
@@ -99,6 +99,6 @@ exports.sendMessages = function(request, response) {
             request.flash('successes', 'Messages on their way!');
         }
 
-        response.redirect(config.appLead + '/');
+        response.redirect('/');
     });
 };
