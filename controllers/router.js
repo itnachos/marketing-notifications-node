@@ -8,7 +8,7 @@ module.exports = function(app) {
     app.post(config.appLead + '/message', message.webhook);
 
     // Render a page that will allow an administrator to send out a message to all subscribers
-    app.get(config.appLead + '/', pages.showForm);
+    app.get('/', pages.showForm);
 
     // Handle form submission and send messages to subscribers
     app.post(config.appLead + '/message/send', message.sendMessages);
