@@ -6,7 +6,7 @@ block content
   p.
     Use this form to send MMS notifications to any subscribers.
 
-  form(action='/myapp/message/send', method='POST')
+  form(action='message/send', method='POST')
 
     // The text of the message to send
     .form-group
@@ -19,5 +19,11 @@ block content
       label(for='imageUrl') (Optional) Image URL to send in an MMS
       input.form-control(type='text', name='imageUrl',
         placeholder='http://fake.twilio.com/some_image.png')
+
+    // Token
+    .form-group
+      label(for='token') Token for sending
+      input.form-control(type='text', name='token',
+        placeholder='1234567890')
 
     button.btn.btn-primary(type='submit') Send Yourself a Message!

@@ -17,10 +17,18 @@ var SubscriberSchema = new mongoose.Schema({
 
 // Static function to send a message to all current subscribers
 SubscriberSchema.statics.sendMessage = function(message, url, callback) {
+
     // Find all subscribed users
     Subscriber.find({
         subscribed: true
     }, function(err, docs) {
+
+        if(message.length < 3) {
+            return callback.call(this, {
+                message: 'Not enough!'
+            });
+        }
+
         if (err || docs.length == 0) {
             return callback.call(this, {
                 message: 'Couldn\'t find any subscribers!'

@@ -25,5 +25,8 @@ cfg.twilioNumber = process.env.TWILIO_NUMBER;
 // MONGOLAB_URI is for the MongoLab add-on for Heroku deployment
 cfg.mongoUrl = process.env.MONGOLAB_URI || process.env.MONGO_URL
 
+cfg.token = process.env.TOKEN;
+cfg.appLead = process.env.APP_LEAD;
+
 // Export configuration object
 module.exports = cfg;

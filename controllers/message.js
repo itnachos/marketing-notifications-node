@@ -1,4 +1,5 @@
 var Subscriber = require('../models/Subscriber');
+var config = require('../config');
 
 // Create a function to handle Twilio SMS / MMS webhook requests
 exports.webhook = function(request, response) {
@@ -83,8 +84,14 @@ exports.sendMessages = function(request, response) {
     // Get message info from form submission
     var message = request.body.message;
     var imageUrl = request.body.imageUrl;
+    var token = request.body.token;
 
-    // Use model function to send messages to all subscribers
+    if (config.token != token) {
+        request.flash('errors', 'Invalid token');
+        return response.redirect(config.appLead + '/');
+    }
+
+        // Use model function to send messages to all subscribers
     Subscriber.sendMessage(message, imageUrl, function(err) {
         if (err) {
             request.flash('errors', err.message);
@@ -92,6 +99,6 @@ exports.sendMessages = function(request, response) {
             request.flash('successes', 'Messages on their way!');
         }
 
-        response.redirect('/myapp');
+        response.redirect(config.appLead + '/');
     });
 };
