@@ -81,6 +81,7 @@ exports.webhook = function(request, response) {
 
 // Handle form submission
 exports.sendMessages = function(request, response) {
+    console.log('sendMessages');
     // Get message info from form submission
     var message = request.body.message;
     var imageUrl = request.body.imageUrl;
